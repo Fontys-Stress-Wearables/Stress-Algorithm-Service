@@ -19,3 +19,7 @@ This component has no endpoints, all communication goes through the NATS service
 - Heartrate measurement data is passed through to this component via NATS
 - This data is then passed through the HRVAlgorithm class for processing into stress data
 - The resulting HRV measurements are then passed to the Stress Data Service, which saves it to the database
+
+## Docker
+docker build -t stress_algorithm_service .
+docker run -p 5032:80 --network=swsp stress_algorithm_service
