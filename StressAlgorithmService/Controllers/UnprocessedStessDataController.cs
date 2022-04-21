@@ -8,6 +8,7 @@ namespace StressAlgorithmService.Controllers
     [ApiController]
     public class UnprocessedStessDataController : ControllerBase
     {
+
         // GET: api/<UnprocessedStessDataController>
         [HttpGet]
         public IEnumerable<string> Get()
