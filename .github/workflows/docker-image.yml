@@ -1,4 +1,4 @@
-name: Docker Image CI
+name: Docker Image Builds
 
 on:
   push:
@@ -14,4 +14,4 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Build the Docker image
-      run: docker build . --file ../StressAlgorithmService/Dockerfile --tag stress_algorithm_service:$(date +%s)
+      run: docker build ./StressAlgorithmService -t stress_algorithm_service:$(date +%s)
