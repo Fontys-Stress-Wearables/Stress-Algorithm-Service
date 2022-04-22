@@ -3,18 +3,19 @@ using Newtonsoft.Json;
 using NATS.Client;
 using System;
 using System.Text;
+using StressAlgorithmService.Nats;
 
 public class NatsService : INatsService
 {
-    private readonly IConfiguration _configuration;
     private readonly IConnection? _connection;
     private IAsyncSubscription? _asyncSubscription;
+    private TechnicalHealthManager technicalHealthManager;
 
-    public NatsService(IConfiguration configuration)
+    public NatsService()
     {
-        _configuration = configuration;
         _connection = Connect();
-        Subscribe("patient");
+        technicalHealthManager = new TechnicalHealthManager(this);
+        Subscribe("technical_health");
     }
 
     public IConnection Connect()
@@ -22,9 +23,20 @@ public class NatsService : INatsService
         ConnectionFactory cf = new ConnectionFactory();
         Options opts = ConnectionFactory.GetDefaultOptions();
 
-        opts.Url = "nats://localhost:4222";
-        Console.WriteLine("Connected to the NATS Server");
-        return cf.CreateConnection(opts);
+        opts.Url = "nats://host.docker.internal:4222";
+        Console.WriteLine("Trying to connect to the NATS Server");
+
+        try
+        {
+            IConnection connection = cf.CreateConnection(opts);
+            Console.WriteLine("Succesfully connected to the NATS server");
+            return connection;
+        }
+        catch
+        {
+            Console.WriteLine("Failed to connect to the NATS server");
+            return null;
+        }
     }
 
     public void Publish<T>(string target, T data)
