@@ -15,7 +15,7 @@ namespace StressAlgorithmService.Nats
 
         public void StartHeartbeat()
         {
-            Timer heartbeatTimer = new Timer(new TimerCallback(heartbeatTimerCallback), null, 1000, 30000);
+            Timer heartbeatTimer = new Timer(heartbeatTimerCallback, null, 1000, 30000);
         }
 
         static void heartbeatTimerCallback(object state)
