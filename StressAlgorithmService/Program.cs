@@ -1,3 +1,7 @@
+using StressAlgorithmService.Controllers;
+using StressAlgorithmService.Interfaces;
+using StressAlgorithmService.Logic;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -5,7 +9,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 
 builder.Services.AddSingleton<INatsService, NatsService>();
-
+builder.Services.AddSingleton<IHRVAlgorithm, HRVAlgorithm>();
+builder.Services.AddSingleton<UnprocessedStressDataService>();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -20,6 +25,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.Services.GetServices<INatsService>();
+app.Services.GetServices<UnprocessedStressDataService>();
 
 app.UseHttpsRedirection();
 

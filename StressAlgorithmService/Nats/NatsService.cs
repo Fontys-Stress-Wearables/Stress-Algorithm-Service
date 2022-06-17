@@ -15,7 +15,6 @@ public class NatsService : INatsService
     {
         _connection = Connect();
         technicalHealthManager = new TechnicalHealthManager(this);
-        Subscribe("technical_health");
     }
 
     public IConnection Connect()
@@ -42,16 +41,21 @@ public class NatsService : INatsService
     public void Publish<T>(string target, T data)
     {
         var message = new NatsMessage<T> { target = target, message = data };
+        Console.WriteLine("Message sent: " + target);
         _connection?.Publish(target, Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(message)));
     }
 
-    public void Subscribe(string target)
+    public void Subscribe<T>(string target, Action<T> handler)
     {
         EventHandler<MsgHandlerEventArgs> h = (sender, args) =>
         {
             // print the message
             string receivedMessage = Encoding.UTF8.GetString(args.Message.Data);
-            LogMessage(receivedMessage);
+            Console.WriteLine("message received: " + target);
+
+            var message = JsonConvert.DeserializeObject<T>(receivedMessage);
+
+            handler(message);
         };
 
         _asyncSubscription = _connection?.SubscribeAsync(target);
@@ -59,6 +63,8 @@ public class NatsService : INatsService
         {
             _asyncSubscription.MessageHandler += h;
             _asyncSubscription.Start();
+
+            Console.WriteLine("Subscribed to: " + target);
         }
     }
 

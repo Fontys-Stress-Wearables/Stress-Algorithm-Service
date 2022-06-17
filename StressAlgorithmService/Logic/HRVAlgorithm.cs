@@ -5,14 +5,6 @@ namespace StressAlgorithmService.Logic
 {
     public class HRVAlgorithm : IHRVAlgorithm
     {
-        public List<HeartRateMeasurement> CalculateHRV(List<HeartRateMeasurement> heartRates)
-        {
-            int[] intervals = (from HeartRateMeasurement heartRate in heartRates
-                              select heartRate.HeartRateInterval).ToArray();
-            double hrv = CalculateHRVBasedOnIntervals(intervals);
-            throw new NotImplementedException();
-        }
-        
         public int CalculateHRVBasedOnIntervals(int[] intervals)
         {
             int lastInterval = 0;
@@ -29,11 +21,13 @@ namespace StressAlgorithmService.Logic
             double average = FindAverage(intervalDifferences.ToArray());
             return (int)Math.Round(Math.Sqrt(average));
         }
+
         //Calculates the difference between 2 integer values, and does it to the power 2
         public int DifferenceBetweenIntervalsToPower2(int interval1, int interval2)
         {
             return (int)Math.Pow(interval1 - interval2, 2);
         }
+
         //calculates the avarage of a list of integers
         public double FindAverage(int[] intervalDifferences)
         {
