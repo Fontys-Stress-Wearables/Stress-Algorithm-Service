@@ -4,6 +4,6 @@ namespace StressAlgorithmService.Interfaces
 {
     public interface IHRVAlgorithm
     {
-        public List<HeartRateMeasurement> CalculateHRV(List<HeartRateMeasurement> heartRates);
+        public int CalculateHRVBasedOnIntervals(int[] intervals);
     }
 }

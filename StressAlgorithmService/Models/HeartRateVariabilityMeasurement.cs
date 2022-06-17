@@ -4,10 +4,10 @@
     {
         public string PatientId { get; set; }
         public string WearableId { get; set; }
-        public string TimeStamp { get; set; }
+        public DateTime TimeStamp { get; set; }
         public int HeartRateVariability { get; set; }
 
-        public HeartRateVariabilityMeasurement(string patientId, string wearableId, string timeStamp, int heartRateVariability)
+        public HeartRateVariabilityMeasurement(string patientId, string wearableId, DateTime timeStamp, int heartRateVariability)
         {
             PatientId = patientId;
             WearableId = wearableId;
